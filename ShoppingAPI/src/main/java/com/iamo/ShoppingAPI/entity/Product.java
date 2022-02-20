@@ -39,18 +39,7 @@ public class Product {
 	public Product() {
 	}
 
-	public Product(String productId, String productName, float saleprice, float fullprice, Date promotionExpDate,
-			String storeId, String productDetails, String size, String picture) {
-		this.productId = productId;
-		this.productName = productName;
-		this.saleprice = saleprice;
-		this.fullprice = fullprice;
-		this.promotionExpDate = promotionExpDate;
-		this.storeId = storeId;
-		this.productDetails = productDetails;
-		this.size = size;
-		this.picture = picture;
-	}
+
 
 	public String getProductId() {
 		return productId;

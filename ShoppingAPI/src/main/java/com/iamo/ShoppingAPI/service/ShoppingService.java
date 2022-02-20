@@ -8,10 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iamo.ShoppingAPI.been.ProductLsit;
+import com.iamo.ShoppingAPI.been.RequestAddToCart;
+import com.iamo.ShoppingAPI.been.ResponseAddToCart;
 import com.iamo.ShoppingAPI.been.ResponseProductDetail;
 import com.iamo.ShoppingAPI.been.ResponseSearchProduct;
+import com.iamo.ShoppingAPI.entity.Cart;
 import com.iamo.ShoppingAPI.entity.Product;
 import com.iamo.ShoppingAPI.entity.Store;
+import com.iamo.ShoppingAPI.repository.CartRepository;
 import com.iamo.ShoppingAPI.repository.ProductRepository;
 import com.iamo.ShoppingAPI.repository.StoreRepository;
 
@@ -20,6 +24,12 @@ public class ShoppingService {
 
 	private ProductRepository productRepository;
 	private StoreRepository storeRepository;
+	private CartRepository cartRepository;
+
+	@Autowired
+	public void setCartRepository(CartRepository cartRepository) {
+		this.cartRepository = cartRepository;
+	}
 
 	@Autowired
 	public void setStoreRepository(StoreRepository storeRepository) {
@@ -101,6 +111,38 @@ public class ShoppingService {
 		}
 
 		return null;
+	}
+
+	public ResponseAddToCart addToCart(RequestAddToCart addToCart) {
+		ResponseAddToCart responseAddToCart = new ResponseAddToCart();
+
+		Optional<Product> opProduct = productRepository.findById(addToCart.getProductId());
+		if (opProduct.isPresent()) {
+			Product product = opProduct.get();
+			int sku = opProduct.get().getSku() - addToCart.getSku();
+			if (sku < 0) {
+				return null;
+			}
+
+			product.setSku(sku);
+			productRepository.save(product);
+
+			Cart cart = new Cart();
+			cart.setProductId(addToCart.getProductId());
+			cart.setSku(sku);
+			cart.setStoreId(addToCart.getStoreId());
+			cart.setAmount(addToCart.getAmount());
+			cart.setUsername(addToCart.getUsername());
+
+			cartRepository.save(cart);
+
+			responseAddToCart.setCode("00");
+			responseAddToCart.setMessage("success");
+			return responseAddToCart;
+		}
+
+		return null;
+
 	}
 
 }
