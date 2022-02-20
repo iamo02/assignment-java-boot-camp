@@ -6,12 +6,15 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import com.iamo.ShoppingAPI.been.CatrLsit;
 import com.iamo.ShoppingAPI.been.ProductLsit;
 import com.iamo.ShoppingAPI.been.RequestAddToCart;
 import com.iamo.ShoppingAPI.been.ResponseAddToCart;
 import com.iamo.ShoppingAPI.been.ResponseProductDetail;
 import com.iamo.ShoppingAPI.been.ResponseSearchProduct;
+import com.iamo.ShoppingAPI.been.ResponseShoppingDetail;
 import com.iamo.ShoppingAPI.entity.Cart;
 import com.iamo.ShoppingAPI.entity.Product;
 import com.iamo.ShoppingAPI.entity.Store;
@@ -133,12 +136,58 @@ public class ShoppingService {
 			cart.setStoreId(addToCart.getStoreId());
 			cart.setAmount(addToCart.getAmount());
 			cart.setUsername(addToCart.getUsername());
-
+			cart.setSize(addToCart.getSize());
 			cartRepository.save(cart);
 
 			responseAddToCart.setCode("00");
 			responseAddToCart.setMessage("success");
 			return responseAddToCart;
+		}
+
+		return null;
+
+	}
+
+	public ResponseShoppingDetail shoppingDetail(String username) {
+		ResponseShoppingDetail responseShoppingDetail = new ResponseShoppingDetail();
+		CatrLsit catrLsit = null;
+		List<CatrLsit> catrLsits = new ArrayList<CatrLsit>();
+		List<Cart> carts = cartRepository.findByUsername(username);
+		float sumAmount = 0;
+
+		
+		if (carts.size() > 0) {
+			for (Cart cart : carts) {
+				Optional<Product> opProduct = productRepository.findById(cart.getProductId());
+				if (opProduct.isPresent()) {
+					catrLsit = new CatrLsit();
+					float discount = (opProduct.get().getFullprice() - opProduct.get().getSaleprice()) * 100
+							/ opProduct.get().getFullprice();
+					catrLsit.setDiscount(discount + "%");
+					catrLsit.setFullPrice(opProduct.get().getFullprice());
+					catrLsit.setPicture(opProduct.get().getPicture());
+					catrLsit.setProductDetails(opProduct.get().getProductDetails());
+					catrLsit.setProductId(opProduct.get().getProductId());
+					catrLsit.setProductName(opProduct.get().getProductName());
+					catrLsit.setSalePrice(opProduct.get().getSaleprice());
+					catrLsit.setSize(cart.getSize());
+
+					Optional<Store> opStore = storeRepository.findById(opProduct.get().getStoreId());
+					if (opStore.isPresent()) {
+
+						catrLsit.setStoreName(opStore.get().getStoreName());
+					}
+
+					catrLsits.add(catrLsit);
+				}
+				sumAmount = sumAmount + cart.getAmount();				
+			}
+			responseShoppingDetail.setCatrLsits(catrLsits);
+			responseShoppingDetail.setCode("00");
+			responseShoppingDetail.setMessage("success");
+			responseShoppingDetail.setTotalPrice(sumAmount);
+			return responseShoppingDetail;
+
 		}
 
 		return null;

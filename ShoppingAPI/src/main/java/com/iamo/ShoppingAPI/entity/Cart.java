@@ -16,6 +16,7 @@ public class Cart {
 	private String username;
 	private float amount;
 	private String storeId;
+	private String size;
 
 	public long getId() {
 		return id;
@@ -61,4 +62,13 @@ public class Cart {
 		this.storeId = storeId;
 	}
 
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	
 }
