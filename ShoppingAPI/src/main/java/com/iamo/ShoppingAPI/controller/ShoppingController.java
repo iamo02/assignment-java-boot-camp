@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iamo.ShoppingAPI.been.ResponseProductDetail;
 import com.iamo.ShoppingAPI.been.ResponseSearchProduct;
 import com.iamo.ShoppingAPI.service.ShoppingService;
 
@@ -21,9 +22,11 @@ public class ShoppingController {
 	
 	@GetMapping("/api/v1/searchproduct/{product}")
 	public ResponseSearchProduct searchProduct(@PathVariable String product) {
-		
-		
-		
 		return shoppingService.searchProduct(product);
+	}
+	
+	@GetMapping("/api/v1/getProduct/{productId}")
+	public ResponseProductDetail getProduct(@PathVariable String productId) {
+		return shoppingService.getProduct(productId);
 	}
 }

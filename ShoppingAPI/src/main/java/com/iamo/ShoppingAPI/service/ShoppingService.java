@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.iamo.ShoppingAPI.been.ProductLsit;
+import com.iamo.ShoppingAPI.been.ResponseProductDetail;
 import com.iamo.ShoppingAPI.been.ResponseSearchProduct;
 import com.iamo.ShoppingAPI.entity.Product;
 import com.iamo.ShoppingAPI.entity.Store;
@@ -61,6 +62,42 @@ public class ShoppingService {
 			responseSearchProduct.setCode("00");
 			responseSearchProduct.setMessage("success");
 			return responseSearchProduct;
+		}
+
+		return null;
+	}
+
+	public ResponseProductDetail getProduct(String productId) {
+		ResponseProductDetail detail = new ResponseProductDetail();
+
+		Optional<Product> opProduct = productRepository.findById(productId);
+		if (opProduct.isPresent()) {
+
+			detail.setCode("00");
+			float discount = (opProduct.get().getFullprice() - opProduct.get().getSaleprice()) * 100
+					/ opProduct.get().getFullprice();
+			detail.setDiscount(discount + "%");
+			detail.setFullPrice(opProduct.get().getFullprice());
+			detail.setMessage("success");
+			detail.setPictures(opProduct.get().getPicture());
+			detail.setProductDetails(opProduct.get().getProductDetails());
+			detail.setProductId(opProduct.get().getProductId());
+			detail.setProductName(opProduct.get().getProductName());
+			detail.setPromotionExpDate(opProduct.get().getPromotionExpDate());
+			detail.setSalePrice(opProduct.get().getSaleprice());
+			detail.setSize(opProduct.get().getSize());
+			detail.setSku(opProduct.get().getSku());
+			Optional<Store> opStore = storeRepository.findById(opProduct.get().getStoreId());
+			if (opStore.isPresent()) {
+
+				detail.setScore(opStore.get().getScore());
+				detail.setStoreName(opStore.get().getStoreName());
+
+				detail.setAddress(opStore.get().getAddress());
+			}
+
+			return detail;
+
 		}
 
 		return null;
