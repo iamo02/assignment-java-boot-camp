@@ -22,6 +22,7 @@ import com.iamo.ShoppingAPI.entity.Coupon;
 import com.iamo.ShoppingAPI.entity.Product;
 import com.iamo.ShoppingAPI.entity.Store;
 import com.iamo.ShoppingAPI.entity.User;
+import com.iamo.ShoppingAPI.exception.NotFoundException;
 import com.iamo.ShoppingAPI.repository.CartRepository;
 import com.iamo.ShoppingAPI.repository.CouponRepository;
 import com.iamo.ShoppingAPI.repository.ProductRepository;
@@ -95,7 +96,7 @@ public class ShoppingService {
 			return responseSearchProduct;
 		}
 
-		return null;
+		 throw new NotFoundException(productName);
 	}
 
 	public ResponseProductDetail getProduct(String productId) {
@@ -131,7 +132,7 @@ public class ShoppingService {
 
 		}
 
-		return null;
+		throw new NotFoundException("Product ID : "+productId);
 	}
 
 	public ResponseAddToCart addToCart(RequestAddToCart addToCart) {
@@ -142,7 +143,7 @@ public class ShoppingService {
 			Product product = opProduct.get();
 			int sku = opProduct.get().getSku() - addToCart.getSku();
 			if (sku < 0) {
-				return null;
+				throw new NotFoundException("SKU Product: "+opProduct.get().getProductName());
 			}
 
 			product.setSku(sku);
@@ -162,8 +163,7 @@ public class ShoppingService {
 			return responseAddToCart;
 		}
 
-		return null;
-
+		throw new NotFoundException("Product ID : "+addToCart.getProductId());
 	}
 
 	public ResponseShoppingDetail shoppingDetail(String username) {
@@ -207,7 +207,7 @@ public class ShoppingService {
 
 		}
 
-		return null;
+		throw new NotFoundException("Cart ");
 
 	}
 
@@ -229,7 +229,7 @@ public class ShoppingService {
 			return address;
 		}
 
-		return null;
+		throw new NotFoundException("Address");
 
 	}
 	
@@ -258,7 +258,7 @@ public class ShoppingService {
 
 			return responseCoupon;
 		}
-		return null;
+		throw new NotFoundException(requestCoupon.getCouponCode());
 	}
 
 }

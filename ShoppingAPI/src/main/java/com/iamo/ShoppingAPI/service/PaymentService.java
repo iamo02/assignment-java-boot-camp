@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import com.iamo.ShoppingAPI.been.RequestPaymentCredit;
 import com.iamo.ShoppingAPI.been.ResponsePaymentCredit;
 import com.iamo.ShoppingAPI.entity.PurchaseList;
+import com.iamo.ShoppingAPI.exception.NotFoundException;
 import com.iamo.ShoppingAPI.repository.CartRepository;
 import com.iamo.ShoppingAPI.repository.PurchaseListRepository;
 
@@ -74,7 +75,7 @@ public class PaymentService {
 			responsePaymentCredit.setReturnUrl(requestPaymentCredit.getReturnUrl());
 			return responsePaymentCredit;
 		}
-		return null;
+		throw new NotFoundException("payment ");
 	}
 
 }
