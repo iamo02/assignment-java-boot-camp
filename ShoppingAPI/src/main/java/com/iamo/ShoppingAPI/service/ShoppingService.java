@@ -6,21 +6,23 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.iamo.ShoppingAPI.been.CatrLsit;
 import com.iamo.ShoppingAPI.been.ProductLsit;
 import com.iamo.ShoppingAPI.been.RequestAddToCart;
 import com.iamo.ShoppingAPI.been.ResponseAddToCart;
+import com.iamo.ShoppingAPI.been.ResponseAddress;
 import com.iamo.ShoppingAPI.been.ResponseProductDetail;
 import com.iamo.ShoppingAPI.been.ResponseSearchProduct;
 import com.iamo.ShoppingAPI.been.ResponseShoppingDetail;
 import com.iamo.ShoppingAPI.entity.Cart;
 import com.iamo.ShoppingAPI.entity.Product;
 import com.iamo.ShoppingAPI.entity.Store;
+import com.iamo.ShoppingAPI.entity.User;
 import com.iamo.ShoppingAPI.repository.CartRepository;
 import com.iamo.ShoppingAPI.repository.ProductRepository;
 import com.iamo.ShoppingAPI.repository.StoreRepository;
+import com.iamo.ShoppingAPI.repository.UserRepository;
 
 @Service
 public class ShoppingService {
@@ -28,6 +30,12 @@ public class ShoppingService {
 	private ProductRepository productRepository;
 	private StoreRepository storeRepository;
 	private CartRepository cartRepository;
+	private UserRepository userRepository;
+
+	@Autowired
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	@Autowired
 	public void setCartRepository(CartRepository cartRepository) {
@@ -155,7 +163,6 @@ public class ShoppingService {
 		List<Cart> carts = cartRepository.findByUsername(username);
 		float sumAmount = 0;
 
-		
 		if (carts.size() > 0) {
 			for (Cart cart : carts) {
 				Optional<Product> opProduct = productRepository.findById(cart.getProductId());
@@ -180,7 +187,7 @@ public class ShoppingService {
 
 					catrLsits.add(catrLsit);
 				}
-				sumAmount = sumAmount + cart.getAmount();				
+				sumAmount = sumAmount + cart.getAmount();
 			}
 			responseShoppingDetail.setCatrLsits(catrLsits);
 			responseShoppingDetail.setCode("00");
@@ -188,6 +195,28 @@ public class ShoppingService {
 			responseShoppingDetail.setTotalPrice(sumAmount);
 			return responseShoppingDetail;
 
+		}
+
+		return null;
+
+	}
+
+	public ResponseAddress getAddress(String username) {
+
+		ResponseAddress address = new ResponseAddress();
+
+		Optional<User> optional = userRepository.findById(username);
+		if (optional.isPresent()) {
+			address.setAddress(optional.get().getAddress());
+			address.setCode("00");
+			address.setDistrict(optional.get().getDistrict());
+			address.setEmail(optional.get().getEmail());
+			address.setFullName(optional.get().getFullName());
+			address.setMessage("success");
+			address.setMobile(optional.get().getMobile());
+			address.setProvince(optional.get().getProvince());
+			address.setZipCode(optional.get().getZipCode());
+			return address;
 		}
 
 		return null;

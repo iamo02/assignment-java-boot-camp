@@ -10,8 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.iamo.ShoppingAPI.entity.Product;
 import com.iamo.ShoppingAPI.entity.Store;
+import com.iamo.ShoppingAPI.entity.User;
 import com.iamo.ShoppingAPI.repository.ProductRepository;
 import com.iamo.ShoppingAPI.repository.StoreRepository;
+import com.iamo.ShoppingAPI.repository.UserRepository;
 
 @SpringBootApplication
 public class ShoppingApiApplication {
@@ -22,6 +24,9 @@ public class ShoppingApiApplication {
 	
 	@Autowired
 	private StoreRepository storeRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@PostConstruct
 	public void ini() {
@@ -49,6 +54,13 @@ public class ShoppingApiApplication {
 		storeRepository.save(store1);
 		storeRepository.save(store2);
 		
+		User user1 = new User("iamo","iamo.java@gmail.com","พงษ์ชัย บุญมี","111/222 xxxx","11111","city","BKK","0812345678");
+		User user2 = new User("pongchai","pongchai.java@gmail.com","พงษ์ชัย บุญมี","111/333 xxxx","22222","บางใหญ่","นนทบุรี","01234567890");
+		User user3 = new User("boonmee","boonmee.java@gmail.com","พงษ์ชัย บุญมี","111/4444 xxxx","3333","บางบัวทอง","กทม","02123456789");
+		
+		userRepository.save(user1);
+		userRepository.save(user2);
+		userRepository.save(user3);
 	}
 
 	public static void main(String[] args) {

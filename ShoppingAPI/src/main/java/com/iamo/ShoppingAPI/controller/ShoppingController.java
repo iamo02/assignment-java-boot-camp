@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iamo.ShoppingAPI.been.RequestAddToCart;
 import com.iamo.ShoppingAPI.been.ResponseAddToCart;
+import com.iamo.ShoppingAPI.been.ResponseAddress;
 import com.iamo.ShoppingAPI.been.ResponseProductDetail;
 import com.iamo.ShoppingAPI.been.ResponseSearchProduct;
 import com.iamo.ShoppingAPI.been.ResponseShoppingDetail;
@@ -41,7 +42,11 @@ public class ShoppingController {
 	
 	@GetMapping("/api/v1/shoppingDetail/{username}")
 	public ResponseShoppingDetail shoppingDetail(@PathVariable String username) {
-		System.out.println(username);
 		return shoppingService.shoppingDetail(username);
+	}
+	
+	@GetMapping("/api/v1/getaddress/{username}")
+	public ResponseAddress getAddress(@PathVariable String username) {
+		return shoppingService.getAddress(username);
 	}
 }
