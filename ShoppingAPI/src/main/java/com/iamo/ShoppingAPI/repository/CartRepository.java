@@ -11,4 +11,5 @@ import com.iamo.ShoppingAPI.entity.Cart;
 public interface CartRepository extends JpaRepository<Cart, Long>{
 
 	List<Cart> findByUsername(String username);
+	void deleteByUsername(String username);
 }
