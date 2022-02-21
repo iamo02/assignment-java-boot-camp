@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iamo.ShoppingAPI.been.RequestAddToCart;
+import com.iamo.ShoppingAPI.been.RequestCoupon;
 import com.iamo.ShoppingAPI.been.ResponseAddToCart;
 import com.iamo.ShoppingAPI.been.ResponseAddress;
+import com.iamo.ShoppingAPI.been.ResponseCoupon;
 import com.iamo.ShoppingAPI.been.ResponseProductDetail;
 import com.iamo.ShoppingAPI.been.ResponseSearchProduct;
 import com.iamo.ShoppingAPI.been.ResponseShoppingDetail;
@@ -48,5 +50,10 @@ public class ShoppingController {
 	@GetMapping("/api/v1/getaddress/{username}")
 	public ResponseAddress getAddress(@PathVariable String username) {
 		return shoppingService.getAddress(username);
+	}
+	
+	@PostMapping("/api/v1/coupon")
+	public ResponseCoupon getCoupon(@RequestBody RequestCoupon requestCoupon) {
+		return shoppingService.getCoupon(requestCoupon);
 	}
 }

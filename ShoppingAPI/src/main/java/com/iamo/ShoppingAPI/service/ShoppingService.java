@@ -10,16 +10,20 @@ import org.springframework.stereotype.Service;
 import com.iamo.ShoppingAPI.been.CatrLsit;
 import com.iamo.ShoppingAPI.been.ProductLsit;
 import com.iamo.ShoppingAPI.been.RequestAddToCart;
+import com.iamo.ShoppingAPI.been.RequestCoupon;
 import com.iamo.ShoppingAPI.been.ResponseAddToCart;
 import com.iamo.ShoppingAPI.been.ResponseAddress;
+import com.iamo.ShoppingAPI.been.ResponseCoupon;
 import com.iamo.ShoppingAPI.been.ResponseProductDetail;
 import com.iamo.ShoppingAPI.been.ResponseSearchProduct;
 import com.iamo.ShoppingAPI.been.ResponseShoppingDetail;
 import com.iamo.ShoppingAPI.entity.Cart;
+import com.iamo.ShoppingAPI.entity.Coupon;
 import com.iamo.ShoppingAPI.entity.Product;
 import com.iamo.ShoppingAPI.entity.Store;
 import com.iamo.ShoppingAPI.entity.User;
 import com.iamo.ShoppingAPI.repository.CartRepository;
+import com.iamo.ShoppingAPI.repository.CouponRepository;
 import com.iamo.ShoppingAPI.repository.ProductRepository;
 import com.iamo.ShoppingAPI.repository.StoreRepository;
 import com.iamo.ShoppingAPI.repository.UserRepository;
@@ -31,6 +35,12 @@ public class ShoppingService {
 	private StoreRepository storeRepository;
 	private CartRepository cartRepository;
 	private UserRepository userRepository;
+	private CouponRepository couponRepository;
+	
+	@Autowired
+	public void setCouponRepository(CouponRepository couponRepository) {
+		this.couponRepository = couponRepository;
+	}
 
 	@Autowired
 	public void setUserRepository(UserRepository userRepository) {
@@ -221,6 +231,34 @@ public class ShoppingService {
 
 		return null;
 
+	}
+	
+	public ResponseCoupon getCoupon(RequestCoupon requestCoupon) {
+		Optional<Coupon> optional = couponRepository.findById(requestCoupon.getCouponCode());
+		ResponseCoupon responseCoupon = new ResponseCoupon();
+		if (optional.isPresent()) {
+			float newPrice = 0;
+			float discount =0;
+
+			if (optional.get().getType().equals("percent")) {
+				newPrice = requestCoupon.getTotalPrice()
+						- (requestCoupon.getTotalPrice() * optional.get().getDiscount() / 100);
+
+			} else if (optional.get().getType().equals("amounts")) {
+				newPrice = requestCoupon.getTotalPrice() - optional.get().getDiscount();
+			} else {
+				newPrice = requestCoupon.getTotalPrice();
+			}
+
+			discount = requestCoupon.getTotalPrice() - newPrice;
+			responseCoupon.setCode("00");
+			responseCoupon.setDiscount(discount);
+			responseCoupon.setMessage("success");
+			responseCoupon.setNewPrice(newPrice);
+
+			return responseCoupon;
+		}
+		return null;
 	}
 
 }

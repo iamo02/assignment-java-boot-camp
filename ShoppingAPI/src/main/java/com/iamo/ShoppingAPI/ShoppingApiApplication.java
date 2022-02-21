@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.iamo.ShoppingAPI.entity.Coupon;
 import com.iamo.ShoppingAPI.entity.Product;
 import com.iamo.ShoppingAPI.entity.Store;
 import com.iamo.ShoppingAPI.entity.User;
+import com.iamo.ShoppingAPI.repository.CouponRepository;
 import com.iamo.ShoppingAPI.repository.ProductRepository;
 import com.iamo.ShoppingAPI.repository.StoreRepository;
 import com.iamo.ShoppingAPI.repository.UserRepository;
@@ -27,6 +29,9 @@ public class ShoppingApiApplication {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CouponRepository couponRepository;
 	
 	@PostConstruct
 	public void ini() {
@@ -61,6 +66,13 @@ public class ShoppingApiApplication {
 		userRepository.save(user1);
 		userRepository.save(user2);
 		userRepository.save(user3);
+		
+		
+		Coupon percent20= new Coupon("20percent", "discount 20%", 20, "percent");
+		Coupon baht50= new Coupon("50baht", "discount 50B", 50, "amounts");
+		
+		couponRepository.save(percent20);
+		couponRepository.save(baht50);
 	}
 
 	public static void main(String[] args) {
