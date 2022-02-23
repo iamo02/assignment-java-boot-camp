@@ -10,24 +10,17 @@ import org.springframework.stereotype.Service;
 import com.iamo.ShoppingAPI.been.CatrLsit;
 import com.iamo.ShoppingAPI.been.ProductLsit;
 import com.iamo.ShoppingAPI.been.RequestAddToCart;
-import com.iamo.ShoppingAPI.been.RequestCoupon;
 import com.iamo.ShoppingAPI.been.ResponseAddToCart;
-import com.iamo.ShoppingAPI.been.ResponseAddress;
-import com.iamo.ShoppingAPI.been.ResponseCoupon;
 import com.iamo.ShoppingAPI.been.ResponseProductDetail;
 import com.iamo.ShoppingAPI.been.ResponseSearchProduct;
 import com.iamo.ShoppingAPI.been.ResponseShoppingDetail;
 import com.iamo.ShoppingAPI.entity.Cart;
-import com.iamo.ShoppingAPI.entity.Coupon;
 import com.iamo.ShoppingAPI.entity.Product;
 import com.iamo.ShoppingAPI.entity.Store;
-import com.iamo.ShoppingAPI.entity.User;
 import com.iamo.ShoppingAPI.exception.NotFoundException;
 import com.iamo.ShoppingAPI.repository.CartRepository;
-import com.iamo.ShoppingAPI.repository.CouponRepository;
 import com.iamo.ShoppingAPI.repository.ProductRepository;
 import com.iamo.ShoppingAPI.repository.StoreRepository;
-import com.iamo.ShoppingAPI.repository.UserRepository;
 
 @Service
 public class ShoppingService {
@@ -35,18 +28,6 @@ public class ShoppingService {
 	private ProductRepository productRepository;
 	private StoreRepository storeRepository;
 	private CartRepository cartRepository;
-	private UserRepository userRepository;
-	private CouponRepository couponRepository;
-	
-	@Autowired
-	public void setCouponRepository(CouponRepository couponRepository) {
-		this.couponRepository = couponRepository;
-	}
-
-	@Autowired
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
 
 	@Autowired
 	public void setCartRepository(CartRepository cartRepository) {
@@ -96,7 +77,7 @@ public class ShoppingService {
 			return responseSearchProduct;
 		}
 
-		 throw new NotFoundException(productName);
+		throw new NotFoundException(productName);
 	}
 
 	public ResponseProductDetail getProduct(String productId) {
@@ -132,7 +113,7 @@ public class ShoppingService {
 
 		}
 
-		throw new NotFoundException("Product ID : "+productId);
+		throw new NotFoundException("Product ID : " + productId);
 	}
 
 	public ResponseAddToCart addToCart(RequestAddToCart addToCart) {
@@ -143,7 +124,7 @@ public class ShoppingService {
 			Product product = opProduct.get();
 			int sku = opProduct.get().getSku() - addToCart.getSku();
 			if (sku < 0) {
-				throw new NotFoundException("SKU Product: "+opProduct.get().getProductName());
+				throw new NotFoundException("SKU Product: " + opProduct.get().getProductName());
 			}
 
 			product.setSku(sku);
@@ -151,7 +132,7 @@ public class ShoppingService {
 
 			Cart cart = new Cart();
 			cart.setProductId(addToCart.getProductId());
-			cart.setSku(sku);
+			cart.setSku(addToCart.getSku());
 			cart.setStoreId(addToCart.getStoreId());
 			cart.setAmount(addToCart.getAmount());
 			cart.setUsername(addToCart.getUsername());
@@ -163,7 +144,7 @@ public class ShoppingService {
 			return responseAddToCart;
 		}
 
-		throw new NotFoundException("Product ID : "+addToCart.getProductId());
+		throw new NotFoundException("Product ID : " + addToCart.getProductId());
 	}
 
 	public ResponseShoppingDetail shoppingDetail(String username) {
@@ -209,56 +190,6 @@ public class ShoppingService {
 
 		throw new NotFoundException("Cart ");
 
-	}
-
-	public ResponseAddress getAddress(String username) {
-
-		ResponseAddress address = new ResponseAddress();
-
-		Optional<User> optional = userRepository.findById(username);
-		if (optional.isPresent()) {
-			address.setAddress(optional.get().getAddress());
-			address.setCode("00");
-			address.setDistrict(optional.get().getDistrict());
-			address.setEmail(optional.get().getEmail());
-			address.setFullName(optional.get().getFullName());
-			address.setMessage("success");
-			address.setMobile(optional.get().getMobile());
-			address.setProvince(optional.get().getProvince());
-			address.setZipCode(optional.get().getZipCode());
-			return address;
-		}
-
-		throw new NotFoundException("Address");
-
-	}
-	
-	public ResponseCoupon getCoupon(RequestCoupon requestCoupon) {
-		Optional<Coupon> optional = couponRepository.findById(requestCoupon.getCouponCode());
-		ResponseCoupon responseCoupon = new ResponseCoupon();
-		if (optional.isPresent()) {
-			float newPrice = 0;
-			float discount =0;
-
-			if (optional.get().getType().equals("percent")) {
-				newPrice = requestCoupon.getTotalPrice()
-						- (requestCoupon.getTotalPrice() * optional.get().getDiscount() / 100);
-
-			} else if (optional.get().getType().equals("amounts")) {
-				newPrice = requestCoupon.getTotalPrice() - optional.get().getDiscount();
-			} else {
-				newPrice = requestCoupon.getTotalPrice();
-			}
-
-			discount = requestCoupon.getTotalPrice() - newPrice;
-			responseCoupon.setCode("00");
-			responseCoupon.setDiscount(discount);
-			responseCoupon.setMessage("success");
-			responseCoupon.setNewPrice(newPrice);
-
-			return responseCoupon;
-		}
-		throw new NotFoundException(requestCoupon.getCouponCode());
 	}
 
 }
