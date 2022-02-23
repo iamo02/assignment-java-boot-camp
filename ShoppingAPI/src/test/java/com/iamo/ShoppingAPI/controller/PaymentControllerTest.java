@@ -31,7 +31,7 @@ class PaymentControllerTest {
 
 		amount.setCurrency("THB");
 		amount.setValue(1000);
-		;
+		
 
 		paymentMethod.setCvc("737");
 		paymentMethod.setExpiryMonth("03");
