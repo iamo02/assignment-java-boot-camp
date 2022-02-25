@@ -12,7 +12,7 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String productId;
-	private int sku;
+	private int quantity;
 	private String username;
 	private float amount;
 	private String storeId;
@@ -30,12 +30,14 @@ public class Cart {
 		this.productId = productId;
 	}
 
-	public int getSku() {
-		return sku;
+
+
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setSku(int sku) {
-		this.sku = sku;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	public String getUsername() {

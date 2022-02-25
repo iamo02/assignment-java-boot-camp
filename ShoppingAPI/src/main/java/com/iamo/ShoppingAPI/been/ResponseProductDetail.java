@@ -18,7 +18,7 @@ public class ResponseProductDetail {
 	private String ProductDetails;
 	private String size;
 	private String address;
-	private int sku;
+	private int quantity;
 	
 
 	public String getCode() {
@@ -134,13 +134,14 @@ public class ResponseProductDetail {
 		this.score = score;
 	}
 
-	public int getSku() {
-		return sku;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setSku(int sku) {
-		this.sku = sku;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
+	
 
 	
 }

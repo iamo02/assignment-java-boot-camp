@@ -99,7 +99,7 @@ public class ShoppingService {
 			detail.setPromotionExpDate(opProduct.get().getPromotionExpDate());
 			detail.setSalePrice(opProduct.get().getSaleprice());
 			detail.setSize(opProduct.get().getSize());
-			detail.setSku(opProduct.get().getSku());
+			detail.setQuantity(opProduct.get().getQuantity());
 			Optional<Store> opStore = storeRepository.findById(opProduct.get().getStoreId());
 			if (opStore.isPresent()) {
 
@@ -122,17 +122,17 @@ public class ShoppingService {
 		Optional<Product> opProduct = productRepository.findById(addToCart.getProductId());
 		if (opProduct.isPresent()) {
 			Product product = opProduct.get();
-			int sku = opProduct.get().getSku() - addToCart.getSku();
-			if (sku < 0) {
-				throw new NotFoundException("SKU Product: " + opProduct.get().getProductName());
+			int quantity = opProduct.get().getQuantity() - addToCart.getQuantity();
+			if (quantity < 0) {
+				throw new NotFoundException("Quantity Product: " + opProduct.get().getProductName());
 			}
 
-			product.setSku(sku);
+			product.setQuantity(quantity);
 			productRepository.save(product);
 
 			Cart cart = new Cart();
 			cart.setProductId(addToCart.getProductId());
-			cart.setSku(addToCart.getSku());
+			cart.setQuantity(addToCart.getQuantity());
 			cart.setStoreId(addToCart.getStoreId());
 			cart.setAmount(addToCart.getAmount());
 			cart.setUsername(addToCart.getUsername());

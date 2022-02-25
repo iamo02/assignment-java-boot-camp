@@ -17,12 +17,12 @@ public class Product {
 	private String productDetails;
 	private String size;
 	private String picture;
-	private int sku;
+	private int quantity;
 
 //	"1","Adidas รองเท้า OG RN Women NMD_R1 GZ7997",200.00f,500,new Date(),"1","ของปลอม","7,8,9,10"
 
 	public Product(String productId, String productName, float saleprice, float fullprice, Date promotionExpDate,
-			String storeId, String productDetails, String size, String picture, int sku) {
+			String storeId, String productDetails, String size, String picture, int quantity) {
 		super();
 		this.productId = productId;
 		this.productName = productName;
@@ -33,7 +33,7 @@ public class Product {
 		this.productDetails = productDetails;
 		this.size = size;
 		this.picture = picture;
-		this.sku = sku;
+		this.quantity = quantity;
 	}
 
 	public Product() {
@@ -113,12 +113,12 @@ public class Product {
 		this.picture = picture;
 	}
 
-	public int getSku() {
-		return sku;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setSku(int sku) {
-		this.sku = sku;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
-
+	
 }

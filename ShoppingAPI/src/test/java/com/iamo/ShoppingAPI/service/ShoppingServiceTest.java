@@ -98,7 +98,7 @@ class ShoppingServiceTest {
 
 		Cart cart = new Cart();
 		cart.setProductId("1");
-		cart.setSku(1);
+		cart.setQuantity(1);
 		cart.setStoreId("2");
 		cart.setAmount(300);
 		cart.setUsername("iamo");
@@ -108,7 +108,7 @@ class ShoppingServiceTest {
 		requestAddToCart.setAmount(300);
 		requestAddToCart.setProductId("1");
 		requestAddToCart.setSize("8");
-		requestAddToCart.setSku(1);
+		requestAddToCart.setQuantity(1);
 		requestAddToCart.setStoreId("20");
 		requestAddToCart.setUsername("iamo");
 
@@ -128,7 +128,7 @@ class ShoppingServiceTest {
 		List<Cart> carts = new ArrayList<Cart>();
 		Cart cart = new Cart();
 		cart.setProductId("1");
-		cart.setSku(1);
+		cart.setQuantity(1);
 		cart.setStoreId("2");
 		cart.setAmount(300);
 		cart.setUsername("iamo");

@@ -2,7 +2,7 @@ package com.iamo.ShoppingAPI.been;
 
 public class RequestAddToCart {
 	private String productId;
-	private int sku;
+	private int quantity;
 	private String username;
 	private float amount;
 	private String storeId;
@@ -14,14 +14,6 @@ public class RequestAddToCart {
 
 	public void setProductId(String productId) {
 		this.productId = productId;
-	}
-
-	public int getSku() {
-		return sku;
-	}
-
-	public void setSku(int sku) {
-		this.sku = sku;
 	}
 
 	public String getUsername() {
@@ -56,5 +48,14 @@ public class RequestAddToCart {
 		this.size = size;
 	}
 
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 	
+	
+
 }

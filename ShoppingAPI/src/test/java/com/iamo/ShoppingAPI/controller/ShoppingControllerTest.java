@@ -62,7 +62,7 @@ class ShoppingControllerTest {
 		requestAddToCart.setAmount(400);
 		requestAddToCart.setProductId("1");
 		requestAddToCart.setSize("8");
-		requestAddToCart.setSku(1);
+		requestAddToCart.setQuantity(1);
 		requestAddToCart.setStoreId("1");
 		requestAddToCart.setUsername("iamo");
 
@@ -84,7 +84,7 @@ class ShoppingControllerTest {
 		requestAddToCart.setAmount(400);
 		requestAddToCart.setProductId("500");
 		requestAddToCart.setSize("8");
-		requestAddToCart.setSku(1);
+		requestAddToCart.setQuantity(1);
 		requestAddToCart.setStoreId("20");
 		requestAddToCart.setUsername("iamo");
 
